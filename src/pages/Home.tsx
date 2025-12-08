@@ -22,6 +22,10 @@ export const Home = (): FunctionComponent => {
 			>
 				translate
 			</button>
+			<p>Ваш текст</p>
+			<p className="text-xl text-blue-500 mt-4">
+				Це мій тестовий параграф 🌿
+			</p>
 		</div>
 	);
 };
