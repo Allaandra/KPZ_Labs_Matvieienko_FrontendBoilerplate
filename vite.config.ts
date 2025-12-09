@@ -6,7 +6,6 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 import { defineConfig } from "vitest/config";
 import tailwindcss from "@tailwindcss/vite";
 
-// https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
 		react(),
@@ -21,6 +20,15 @@ export default defineConfig({
 			],
 		}),
 	],
+
+	resolve: {
+		alias: {
+			"@": path.resolve(__dirname, "./src"),
+			"@features": path.resolve(__dirname, "./src/features"),
+			"@routes": path.resolve(__dirname, "./src/routes"),
+		},
+	},
+
 	server: {
 		host: true,
 		strictPort: true,

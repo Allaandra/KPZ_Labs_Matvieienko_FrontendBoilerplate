@@ -1,9 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
+import { ChildEditPage } from "../../features/children/pages/ChildEditPage";
 
-export const Route = createFileRoute('/children/$childId')({
-  component: RouteComponent,
-})
-
-function RouteComponent() {
-  return <div>Hello "/children/$childId"!</div>
-}
+export const Route = createFileRoute("/children/$childId")({
+	component: ChildEditPage,
+});
