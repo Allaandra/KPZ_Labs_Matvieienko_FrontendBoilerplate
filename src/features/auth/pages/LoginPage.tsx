@@ -27,7 +27,7 @@ export function LoginPage(): ReactElement {
 	const onSubmit = async (data: LoginForm) => {
 		try {
 			await loginMutation.mutateAsync(data);
-			navigate({ to: "/groups" }); // перенаправление після входу
+			navigate({ to: "/" }); // перенаправление після входу
 		} catch (error) {
 			alert("Невірні дані для входу.");
 		}
