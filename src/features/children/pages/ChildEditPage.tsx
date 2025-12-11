@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useChild, useUpdateChild } from "../api";
 import { useGroups } from "../../groups/api";
 import { formatDate } from "../../../utils/formatDate.ts";
+import { useRequireAuth } from "../../auth/hooks/useRequireAuth.ts";
 
 // ----------------------
 // ZOD SCHEMA
@@ -27,6 +28,8 @@ type ChildEditFormData = z.infer<typeof childEditSchema>;
 // COMPONENT
 // ----------------------
 export function ChildEditPage(): ReactElement {
+	useRequireAuth();
+
 	const { childId } = useParams({ from: "/children/$childId" });
 
 	const { data: child, isLoading, isError, error } = useChild(Number(childId));

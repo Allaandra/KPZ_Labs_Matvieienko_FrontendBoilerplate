@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useCreateChild } from "../api";
 import { useGroups } from "../../groups/api";
+import { useRequireAuth } from "../../auth/hooks/useRequireAuth.ts";
 
 // ----------------------
 // ZOD SCHEMA
@@ -24,6 +25,8 @@ export type ChildCreateFormData = z.infer<typeof childCreateSchema>;
 // COMPONENT
 // ----------------------
 export function ChildCreatePage(): ReactElement {
+	useRequireAuth();
+
 	const createMutation = useCreateChild();
 	const { data: groups, isLoading: groupsLoading } = useGroups();
 

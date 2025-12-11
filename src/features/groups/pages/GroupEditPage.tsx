@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useGroup, useUpdateGroup } from "../api";
 import type { CreateGroupDTO } from "../types";
+import { useRequireAuth } from "../../auth/hooks/useRequireAuth.ts";
 
 // 🎯 Zod схема
 const groupEditSchema = z.object({
@@ -18,6 +19,8 @@ const groupEditSchema = z.object({
 export type GroupEditFormData = z.infer<typeof groupEditSchema>;
 
 export function GroupEditPage(): ReactElement {
+	useRequireAuth();
+
 	const { groupId } = useParams({ from: "/groups/$groupId" });
 
 	const { data: group, isLoading, isError, error } = useGroup(Number(groupId));

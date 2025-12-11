@@ -1,10 +1,12 @@
 import type { ReactElement } from "react";
 import { Link } from "@tanstack/react-router";
-
+import { useRequireAuth } from "../../auth/hooks/useRequireAuth";
 import { useGroups, useDeleteGroup } from "../api";
 import type { GroupDTO } from "../types";
 
 export function GroupsListPage(): ReactElement {
+	useRequireAuth();
+
 	const {
 		data: groups,
 		isLoading,

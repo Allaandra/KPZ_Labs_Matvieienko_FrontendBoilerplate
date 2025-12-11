@@ -3,8 +3,11 @@ import { Link } from "@tanstack/react-router";
 import { useChildren, useDeleteChild } from "../api";
 import type { ChildDTO } from "../types";
 import { formatDate } from "../../../utils/formatDate";
+import { useRequireAuth } from "../../auth/hooks/useRequireAuth.ts";
 
 export function ChildrenListPage(): ReactElement {
+	useRequireAuth();
+
 	const {
 		data: children,
 		isLoading,

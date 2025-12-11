@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useCreateGroup } from "../api";
 import type { CreateGroupDTO } from "../types";
+import { useRequireAuth } from "../../auth/hooks/useRequireAuth.ts";
 
 // 🎯 Zod схема валідації
 const groupCreateSchema = z.object({
@@ -15,6 +16,8 @@ const groupCreateSchema = z.object({
 export type GroupCreateFormData = z.infer<typeof groupCreateSchema>;
 
 export function GroupCreatePage(): ReactElement {
+	useRequireAuth();
+
 	const createMutation = useCreateGroup();
 
 	const {
