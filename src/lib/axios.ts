@@ -1,6 +1,7 @@
 import type { AxiosError } from "axios";
 // eslint-disable-next-line no-duplicate-imports
 import axios from "axios";
+import { useAuthStore } from "../store/auth";
 
 const apiClient = axios.create({
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -10,23 +11,28 @@ const apiClient = axios.create({
 	},
 });
 
-// Токен из env
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const token = import.meta.env["VITE_API_AUTH_TOKEN"];
+// === REQUEST INTERCEPTOR ===
+apiClient.interceptors.request.use((config) => {
+	const token = useAuthStore.getState().token;
 
-if (typeof token === "string" && token.length > 0) {
-	apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-}
+	if (token) config.headers.Authorization = `Bearer ${token}`;
 
-// Интерцептор ответов
+	return config;
+});
+
+// === RESPONSE INTERCEPTOR ===
 apiClient.interceptors.response.use(
-	(response) => response,
-	(error_) => {
-		const error = error_ as AxiosError<{ message?: string }>;
-		const message =
-			error.response?.data?.message || error.message || "Unknown API error";
+	(res) => res,
+	(error: AxiosError<{ message?: string }>) => {
+		const message = error.response?.data?.message ?? error.message;
 
 		console.error("API Error:", message);
+
+		// Авто-выход если токен просрочен
+		if (error.response?.status === 401) {
+			useAuthStore.getState().clearToken();
+			window.location.href = "/login";
+		}
 
 		return Promise.reject(new Error(message));
 	}

@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GroupsIndexRouteImport } from './routes/groups/index'
 import { Route as ChildrenIndexRouteImport } from './routes/children/index'
@@ -17,6 +18,11 @@ import { Route as GroupsGroupIdRouteImport } from './routes/groups/$groupId'
 import { Route as ChildrenNewRouteImport } from './routes/children/new'
 import { Route as ChildrenChildIdRouteImport } from './routes/children/$childId'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -55,6 +61,7 @@ const ChildrenChildIdRoute = ChildrenChildIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/children/$childId': typeof ChildrenChildIdRoute
   '/children/new': typeof ChildrenNewRoute
   '/groups/$groupId': typeof GroupsGroupIdRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/children/$childId': typeof ChildrenChildIdRoute
   '/children/new': typeof ChildrenNewRoute
   '/groups/$groupId': typeof GroupsGroupIdRoute
@@ -74,6 +82,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/children/$childId': typeof ChildrenChildIdRoute
   '/children/new': typeof ChildrenNewRoute
   '/groups/$groupId': typeof GroupsGroupIdRoute
@@ -85,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
     | '/children/$childId'
     | '/children/new'
     | '/groups/$groupId'
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/login'
     | '/children/$childId'
     | '/children/new'
     | '/groups/$groupId'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/login'
     | '/children/$childId'
     | '/children/new'
     | '/groups/$groupId'
@@ -113,6 +125,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
   ChildrenChildIdRoute: typeof ChildrenChildIdRoute
   ChildrenNewRoute: typeof ChildrenNewRoute
   GroupsGroupIdRoute: typeof GroupsGroupIdRoute
@@ -123,6 +136,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -177,6 +197,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
   ChildrenChildIdRoute: ChildrenChildIdRoute,
   ChildrenNewRoute: ChildrenNewRoute,
   GroupsGroupIdRoute: GroupsGroupIdRoute,
