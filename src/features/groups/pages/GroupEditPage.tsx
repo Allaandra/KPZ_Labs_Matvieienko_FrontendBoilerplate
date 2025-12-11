@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useGroup, useUpdateGroup } from "../api";
 import type { CreateGroupDTO } from "../types";
 
-// 🎯 Zod схема валідації
+// 🎯 Zod схема
 const groupEditSchema = z.object({
 	name: z.string().min(2, "Назва групи повинна містити мінімум 2 символи"),
 });
@@ -20,13 +20,7 @@ export type GroupEditFormData = z.infer<typeof groupEditSchema>;
 export function GroupEditPage(): ReactElement {
 	const { groupId } = useParams({ from: "/groups/$groupId" });
 
-	const {
-		data: group,
-		isLoading,
-		isError,
-		error,
-	} = useGroup(Number(groupId));
-
+	const { data: group, isLoading, isError, error } = useGroup(Number(groupId));
 	const updateMutation = useUpdateGroup();
 
 	const {
@@ -38,16 +32,13 @@ export function GroupEditPage(): ReactElement {
 		resolver: zodResolver(groupEditSchema),
 	});
 
-	// 🎯 Коли дані групи завантажені – заповнюємо форму
+	// 🎯 Заполняем форму, когда данные пришли
 	useEffect(() => {
 		if (group) {
-			reset({
-				name: group.name,
-			});
+			reset({ name: group.name });
 		}
 	}, [group, reset]);
 
-	// 🎯 Обробка сабміту
 	const onSubmit = (data: CreateGroupDTO): void => {
 		updateMutation.mutate({
 			id: Number(groupId),
@@ -65,43 +56,64 @@ export function GroupEditPage(): ReactElement {
 	if (!group) return <div className="p-4">Групу не знайдено</div>;
 
 	return (
-		<div className="p-6 max-w-lg space-y-6">
-			{/* Верхня панель */}
-			<div className="flex items-center justify-between">
-				<h1 className="text-2xl font-bold">Редагування групи</h1>
+		<div className="min-h-screen bg-[#D7EFFF] flex justify-center items-center p-6">
+			{/* CARD */}
+			<div className="w-full max-w-md bg-white/70 backdrop-blur-md p-8 rounded-2xl shadow-lg border border-white/40 space-y-6">
 
-				<Link
-					className="rounded bg-gray-600 px-4 py-2 text-white hover:bg-gray-700"
-					to="/groups"
-				>
-					Назад
-				</Link>
-			</div>
+				{/* Header */}
+				<div className="flex items-center justify-between">
+					<h1 className="text-3xl font-bold text-[#3A506B]">
+						Редагування групи
+					</h1>
 
-			{/* Форма */}
-			<form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-				{/* Поле "name" */}
-				<div>
-					<label className="font-medium">Назва групи</label>
-					<input
-						className="w-full rounded border border-white bg-transparent p-2 text-white"
-						type="text"
-						{...register("name")}
-					/>
-					{errors.name && (
-						<p className="text-red-400">{errors.name.message}</p>
-					)}
+					<Link
+						className="px-4 py-2 rounded-lg font-medium text-[#4B3B47] bg-[#FFBCD9] hover:bg-[#FF8FC3] transition"
+						to="/groups"
+					>
+						Назад
+					</Link>
 				</div>
 
-				{/* Кнопка */}
-				<button
-					className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700 disabled:bg-gray-400"
-					disabled={isSubmitting || updateMutation.isPending}
-					type="submit"
-				>
-					Зберегти зміни
-				</button>
-			</form>
+				{/* FORM */}
+				<form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+
+					{/* OLD VALUE */}
+					<div className="text-sm text-[#7A496A] bg-[#FFE6F0] px-3 py-1 rounded-lg w-fit shadow-sm">
+						Було: <span className="font-semibold">{group.name}</span>
+					</div>
+
+					{/* INPUT */}
+					<div>
+						<label className="font-medium text-[#4B3B47]">
+							Нова назва групи
+						</label>
+
+						<input
+							type="text"
+							className="w-full rounded-lg border border-[#FFBCD9] bg-white/80 p-2 text-[#4B3B47] 
+							focus:border-[#FF8FC3] focus:ring-2 focus:ring-[#FFBCD9] outline-none transition"
+							{...register("name")}
+						/>
+
+						{errors.name && (
+							<p className="text-[#C94A6A] text-sm mt-1">
+								{errors.name.message}
+							</p>
+						)}
+					</div>
+
+					{/* BUTTON */}
+					<button
+						disabled={isSubmitting || updateMutation.isPending}
+						type="submit"
+						className="w-full rounded-lg bg-[#FFBCD9] hover:bg-[#FF8FC3] 
+						text-[#4B3B47] font-semibold py-2 transition disabled:bg-[#E8C4D0]"
+					>
+						Зберегти зміни
+					</button>
+				</form>
+
+			</div>
 		</div>
 	);
 }

@@ -17,7 +17,6 @@ export type GroupCreateFormData = z.infer<typeof groupCreateSchema>;
 export function GroupCreatePage(): ReactElement {
 	const createMutation = useCreateGroup();
 
-	// 🎯 React Hook Form + Zod
 	const {
 		register,
 		handleSubmit,
@@ -26,50 +25,56 @@ export function GroupCreatePage(): ReactElement {
 		resolver: zodResolver(groupCreateSchema),
 	});
 
-	// 🎯 Відправка форми
 	const onSubmit = (data: CreateGroupDTO): void => {
 		createMutation.mutate(data);
 	};
 
 	return (
-		<div className="p-6 max-w-lg space-y-6">
-			{/* Верхня панель */}
-			<div className="flex items-center justify-between">
-				<h1 className="text-2xl font-bold">Створення групи</h1>
+		<div className="min-h-screen bg-[#D7EFFF] flex justify-center items-center p-6">
+			{/* CARD */}
+			<div className="w-full max-w-md bg-white/70 backdrop-blur-md p-8 rounded-2xl shadow-lg border border-white/40 space-y-6">
+				{/* Header */}
+				<div className="flex items-center justify-between">
+					<h1 className="text-3xl font-bold text-[#3A506B]">
+						Створення групи
+					</h1>
 
-				<Link
-					className="rounded bg-gray-600 px-4 py-2 text-white hover:bg-gray-700"
-					to="/groups"
-				>
-					Назад
-				</Link>
-			</div>
-
-			{/* Форма створення */}
-			<form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-				{/* Поле "name" */}
-				<div>
-					<label className="font-medium">Назва групи</label>
-					<input
-						className="w-full rounded border border-white bg-transparent p-2 text-white"
-						type="text"
-						{...register("name")}
-					/>
-
-					{errors.name && (
-						<p className="text-red-400">{errors.name.message}</p>
-					)}
+					<Link
+						className="px-4 py-2 rounded-lg font-medium text-[#4B3B47] bg-[#FFBCD9] hover:bg-[#FF8FC3] transition"
+						to="/groups"
+					>
+						Назад
+					</Link>
 				</div>
 
-				{/* Кнопка */}
-				<button
-					className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700 disabled:bg-gray-400"
-					disabled={isSubmitting || createMutation.isPending}
-					type="submit"
-				>
-					Створити
-				</button>
-			</form>
+				{/* Форма створення */}
+				<form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+					<div>
+						<label className="font-medium text-[#4B3B47]">
+							Назва групи
+						</label>
+						<input
+							className="w-full rounded-lg border border-[#FFBCD9] bg-white/80 p-2 text-[#4B3B47] focus:border-[#FF8FC3] focus:ring-2 focus:ring-[#FFBCD9] outline-none transition"
+							type="text"
+							{...register("name")}
+						/>
+
+						{errors.name && (
+							<p className="text-[#C94A6A] text-sm mt-1">
+								{errors.name.message}
+							</p>
+						)}
+					</div>
+
+					<button
+						className="w-full rounded-lg bg-[#FFBCD9] hover:bg-[#FF8FC3] text-[#4B3B47] font-semibold py-2 transition disabled:bg-[#E8C4D0]"
+						disabled={isSubmitting || createMutation.isPending}
+						type="submit"
+					>
+						Створити
+					</button>
+				</form>
+			</div>
 		</div>
 	);
 }
