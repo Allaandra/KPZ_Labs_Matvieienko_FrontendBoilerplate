@@ -1,4 +1,6 @@
-import type { ReactElement } from "react";
+import type { ReactElement} from "react";
+// eslint-disable-next-line no-duplicate-imports
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useChildren, useDeleteChild } from "../api";
 import type { ChildDTO } from "../types";
@@ -8,6 +10,8 @@ import { BackButton } from "../../../components/BackButton.tsx";
 
 export function ChildrenListPage(): ReactElement {
 	useRequireAuth();
+
+	const [sortBy, setSortBy] = useState<'id' | 'lastName' | 'group' | 'birthday'>('id');
 
 	const {
 		data: children,
@@ -31,19 +35,57 @@ export function ChildrenListPage(): ReactElement {
 			</div>
 		);
 
+	const sortedChildren = [...(children ?? [])].sort((a, b) => {
+		switch (sortBy) {
+			case 'id':
+				return a.id - b.id;
+
+			case 'lastName':
+				return a.lastName.localeCompare(b.lastName);
+
+			case 'birthday':
+				return new Date(a.birthdayDate).getTime() - new Date(b.birthdayDate).getTime();
+
+			case 'group':
+				return a.group.name.localeCompare(b.group.name);
+
+			default:
+				return 0;
+		}
+	});
+
 	return (
 		<div className="min-h-screen bg-[#D7EFFF] p-6 flex flex-col items-center relative">
 			<BackButton />
 			{/* Контейнер */}
 			<div className="w-full max-w-5xl bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/40">
 
-				{/* Верхняя панель */}
-				<div className="flex items-center justify-between mb-4">
-					<h1 className="text-3xl font-bold text-[#3A506B]">Діти</h1>
+				{/* Верхня панель */}
+				<div className="flex items-center justify-between mb-6">
 
+					{/* Ліва частина: Заголовок + селектор */}
+					<div className="flex items-center gap-4">
+						<h1 className="text-3xl font-bold text-[#3A506B]">Діти</h1>
+
+						<select
+							value={sortBy}
+							className="px-3 py-1 text-sm rounded-lg border border-[#FFBCD9] 
+					   bg-[#FFE6F0] text-[#4B3B47] hover:bg-[#FFD3E5] 
+					   transition shadow-sm"
+							onChange={(e) => { setSortBy(e.target.value as any); }}
+						>
+							<option value="id">За ID</option>
+							<option value="lastName">За прізвищем</option>
+							<option value="birthday">За датою</option>
+							<option value="group">За групою</option>
+						</select>
+					</div>
+
+					{/* Кнопка справа */}
 					<Link
-						className="px-4 py-2 rounded-lg font-medium text-[#4B3B47] bg-[#FFBCD9] hover:bg-[#FF8FC3] transition"
 						to="/children/new"
+						className="px-4 py-2 rounded-lg font-medium text-[#4B3B47] 
+				   bg-[#FFBCD9] hover:bg-[#FF8FC3] transition"
 					>
 						Додати дитину
 					</Link>
@@ -65,7 +107,7 @@ export function ChildrenListPage(): ReactElement {
 						</thead>
 
 						<tbody>
-						{children.map((child: ChildDTO) => (
+						{sortedChildren.map((child: ChildDTO) => (
 							<tr
 								key={child.id}
 								className="border-t border-[#FFBCD9] hover:bg-[#FFD3E5] transition"
@@ -76,8 +118,7 @@ export function ChildrenListPage(): ReactElement {
 									{child.lastName} {child.firstName} {child.patronymic}
 								</td>
 
-								<td className="px-4 py-2">{formatDate(child.birthdayDate)}
-								</td>
+								<td className="px-4 py-2">{formatDate(child.birthdayDate)}</td>
 
 								<td className="px-4 py-2">
 									{child.group.name} (#{child.group.id})

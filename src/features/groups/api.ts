@@ -33,10 +33,8 @@ const deleteGroup = async (id: number) => {
 export const useGroups = () =>
 	useQuery({
 		queryKey: ["groups"],
-		queryFn: async () => {
-			const data = await getGroups();
-			return data.sort((a, b) => a.id - b.id); // сортировка по id
-		}, });
+		queryFn: getGroups,
+	});
 
 export const useGroup = (id: number) =>
 	useQuery({ queryKey: ["groups", id], queryFn: () => getGroup(id) });
