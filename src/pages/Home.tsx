@@ -16,7 +16,7 @@ export function Home(): ReactElement {
 	return (
 		<div className="min-h-screen bg-[#D7EFFF] flex justify-center items-center p-6">
 
-			// CARD
+			{/* CARD */}
 			<div className="w-full max-w-xl bg-white/70 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-white/40 space-y-8 text-center">
 
 				<h1 className="text-3xl font-bold text-[#3A506B]">
@@ -27,7 +27,7 @@ export function Home(): ReactElement {
 					Оберіть розділ для роботи
 				</p>
 
-				// BUTTONS
+				{/* BUTTONS */}
 				<div className="flex flex-col space-y-4 mt-6">
 
 					<Link
@@ -45,7 +45,7 @@ export function Home(): ReactElement {
 					</Link>
 				</div>
 
-				// LOGOUT
+				{/* LOGOUT */}
 				<button
 					className="mt-8 px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded-lg transition"
 					onClick={handleLogout}
