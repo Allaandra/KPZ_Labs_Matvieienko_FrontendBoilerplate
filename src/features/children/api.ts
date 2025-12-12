@@ -38,7 +38,10 @@ const deleteChild = async (id: number): Promise<void> => {
 export const useChildren = () =>
 	useQuery({
 		queryKey: ["children"],
-		queryFn: getChildren,
+		queryFn: async () => {
+			const data = await getChildren();
+			return data.sort((a, b) => a.id - b.id); // сортировка по id
+		},
 	});
 
 export const useChild = (id: number) =>

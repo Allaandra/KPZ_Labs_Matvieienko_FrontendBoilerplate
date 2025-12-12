@@ -4,7 +4,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLogin } from "../api";
 import { useNavigate } from "@tanstack/react-router";
-import { useRequireAuth } from "../hooks/useRequireAuth.ts";
 
 const loginSchema = z.object({
 	email: z.string().email("Некоректний email"),
@@ -14,8 +13,6 @@ const loginSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>;
 
 export function LoginPage(): ReactElement {
-	useRequireAuth();
-
 	const loginMutation = useLogin();
 	const navigate = useNavigate();
 

@@ -4,6 +4,7 @@ import { useChildren, useDeleteChild } from "../api";
 import type { ChildDTO } from "../types";
 import { formatDate } from "../../../utils/formatDate";
 import { useRequireAuth } from "../../auth/hooks/useRequireAuth.ts";
+import { BackButton } from "../../../components/BackButton.tsx";
 
 export function ChildrenListPage(): ReactElement {
 	useRequireAuth();
@@ -31,7 +32,8 @@ export function ChildrenListPage(): ReactElement {
 		);
 
 	return (
-		<div className="min-h-screen bg-[#D7EFFF] p-6 flex flex-col items-center">
+		<div className="min-h-screen bg-[#D7EFFF] p-6 flex flex-col items-center relative">
+			<BackButton />
 			{/* Контейнер */}
 			<div className="w-full max-w-5xl bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/40">
 

@@ -1,8 +1,11 @@
 import type { ReactElement } from "react";
 import { Link } from "@tanstack/react-router";
 import { useAuthStore } from "../store/auth.ts";
+import { useRequireAuth } from "../features/auth/hooks/useRequireAuth.ts";
 
 export function Home(): ReactElement {
+	useRequireAuth();
+
 	const clearToken = useAuthStore((s) => s.clearToken);
 
 	const handleLogout = (): void => {

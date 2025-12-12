@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { useRequireAuth } from "../../auth/hooks/useRequireAuth";
 import { useGroups, useDeleteGroup } from "../api";
 import type { GroupDTO } from "../types";
+import { BackButton } from "../../../components/BackButton";
 
 export function GroupsListPage(): ReactElement {
 	useRequireAuth();
@@ -41,8 +42,8 @@ export function GroupsListPage(): ReactElement {
 	}
 
 	return (
-		<div className="min-h-screen bg-[#D7EFFF] flex justify-center items-start p-6">
-
+		<div className="min-h-screen bg-[#D7EFFF] flex justify-center items-start p-6 relative">
+			<BackButton />
 			{/* CARD */}
 			<div className="w-full max-w-5xl bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/40 space-y-4">
 
