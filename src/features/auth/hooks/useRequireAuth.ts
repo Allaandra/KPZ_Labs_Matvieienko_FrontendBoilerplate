@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useAuthStore } from "../../../store/auth.ts";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";

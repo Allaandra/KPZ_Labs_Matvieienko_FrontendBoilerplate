@@ -11,7 +11,9 @@ import { useGroup, useUpdateGroup } from "../api";
 import type { CreateGroupDTO } from "../types";
 import { useRequireAuth } from "../../auth/hooks/useRequireAuth.ts";
 
-// 🎯 Zod схема
+// ----------------------
+// ZOD SCHEMA
+// ----------------------
 const groupEditSchema = z.object({
 	name: z.string().min(2, "Назва групи повинна містити мінімум 2 символи"),
 });

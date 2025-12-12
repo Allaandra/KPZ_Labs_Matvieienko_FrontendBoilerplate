@@ -8,7 +8,9 @@ import { useCreateGroup } from "../api";
 import type { CreateGroupDTO } from "../types";
 import { useRequireAuth } from "../../auth/hooks/useRequireAuth.ts";
 
-// 🎯 Zod схема валідації
+// ----------------------
+// ZOD SCHEMA
+// ----------------------
 const groupCreateSchema = z.object({
 	name: z.string().min(2, "Назва групи повинна містити мінімум 2 символи"),
 });

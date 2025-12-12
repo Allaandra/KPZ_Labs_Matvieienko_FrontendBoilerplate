@@ -53,7 +53,7 @@ export const useCreateChild = () => {
 	const navigate = useNavigate();
 
 	return useMutation({
-		mutationFn: createChild,
+		mutationFn: (data: CreateChildDTO) => createChild(data),
 		onSuccess: () => {
 			qc.invalidateQueries({ queryKey: ["children"] });
 			navigate({ to: "/children" });
@@ -66,21 +66,12 @@ export const useUpdateChild = () => {
 	const navigate = useNavigate();
 
 	return useMutation({
-		mutationFn: ({
-									 id,
-									 data,
-								 }: {
-			id: number;
-			data: CreateChildDTO;
-		}) => updateChild(id, data),
+		mutationFn: ({ id, data, }: { id: number; data: CreateChildDTO; }) =>
+			updateChild(id, data),
 
 		onSuccess: (updatedChild) => {
-			// Обновляем список
 			qc.invalidateQueries({ queryKey: ["children"] });
-
-			// Обновляем конкретного ребёнка
 			qc.setQueryData(["children", updatedChild.id], updatedChild);
-
 			navigate({ to: "/children" });
 		},
 	});
@@ -88,7 +79,6 @@ export const useUpdateChild = () => {
 
 export const useDeleteChild = () => {
 	const qc = useQueryClient();
-
 	return useMutation({
 		mutationFn: deleteChild,
 		onSuccess: () => {

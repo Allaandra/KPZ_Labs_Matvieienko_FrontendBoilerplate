@@ -4,6 +4,8 @@ import apiClient from "../../lib/axios";
 import type { GroupDTO, CreateGroupDTO } from "./types";
 import { useNavigate } from "@tanstack/react-router";
 
+// ================= API =================
+
 const getGroups = async (): Promise<Array<GroupDTO>> => {
 	const res = await apiClient.get("/groups");
 	return res.data;
@@ -37,7 +39,10 @@ export const useGroups = () =>
 	});
 
 export const useGroup = (id: number) =>
-	useQuery({ queryKey: ["groups", id], queryFn: () => getGroup(id) });
+	useQuery({
+		queryKey: ["groups", id],
+		queryFn: () => getGroup(id)
+	});
 
 export const useCreateGroup = () => {
 	const qc = useQueryClient();
@@ -45,7 +50,6 @@ export const useCreateGroup = () => {
 
 	return useMutation({
 		mutationFn: (data: CreateGroupDTO) => createGroup(data),
-
 		onSuccess: () => {
 			qc.invalidateQueries({ queryKey: ["groups"] });
 			navigate({ to: "/groups" });
@@ -69,11 +73,12 @@ export const useUpdateGroup = () => {
 	});
 };
 
-
 export const useDeleteGroup = () => {
 	const qc = useQueryClient();
 	return useMutation({
 		mutationFn: deleteGroup,
-		onSuccess: () => qc.invalidateQueries({ queryKey: ["groups"] }),
+		onSuccess: () => {
+			qc.invalidateQueries({ queryKey: ["groups"] });
+		},
 	});
 };
